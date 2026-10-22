@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SentinelAI</title>
+<style>
+:root{--bg:#050b18;--panel:#0a1428;--line:#153a68;--cyan:#25d9ff;--blue:#1677ff;--green:#20e3b2;--purple:#a78bfa;--muted:#90a8ca}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#10284a 0%,var(--bg) 55%);color:#eaf5ff;font-family:Inter,system-ui,Arial,sans-serif}
+header{padding:20px 24px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{font-size:26px;font-weight:800;letter-spacing:.4px}.brand span{color:var(--cyan)}.sub{color:var(--muted);font-size:12px;margin-top:3px}.pill{border:1px solid #155e75;color:var(--green);padding:8px 12px;border-radius:20px;font-size:12px}
+main{max-width:1400px;margin:auto;padding:20px;display:grid;grid-template-columns:1.6fr 1fr;gap:16px}.panel{background:linear-gradient(145deg,#0b1830eF,#071020f2);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 10px 35px #0005}.wide{grid-column:1/-1}.heading{font-size:18px;font-weight:750;margin-bottom:5px}.muted{color:var(--muted);font-size:13px}.metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:16px}.metric{border:1px solid #174675;border-radius:13px;padding:16px;background:#061124}.metric-top{display:flex;justify-content:space-between;gap:10px;color:var(--muted)}.value{font-size:34px;font-weight:800;margin:12px 0;color:var(--cyan)}.ram .value{color:var(--green)}.bar{height:8px;background:#152a4b;border-radius:20px;overflow:hidden}.fill{height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--cyan));border-radius:20px;transition:width .4s}.ram .fill{background:linear-gradient(90deg,#0aa783,var(--green))}
+.actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:16px}.action{padding:15px;text-align:left;background:#07162b;border:1px solid #1761a3;color:#eef8ff;border-radius:12px;font-size:14px;cursor:pointer}.action:hover{border-color:var(--cyan);background:#0d2341}.action b{display:block;margin-bottom:6px}.command{display:flex;gap:8px;margin-top:14px}.command input{min-width:0;flex:1;background:#030a16;color:white;border:1px solid #24507d;border-radius:10px;padding:13px;font-size:14px}.btn{background:linear-gradient(90deg,#0878ef,#13b9ff);border:0;border-radius:10px;padding:12px 15px;color:white;font-weight:700;cursor:pointer}.mic{background:#17254b;border:1px solid #5c68d9;border-radius:10px;color:white;padding:0 14px;cursor:pointer}.logs{display:flex;flex-direction:column;gap:10px;margin-top:15px;max-height:330px;overflow:auto}.log{padding:11px;border:1px solid #142e50;background:#071124;border-radius:10px;font-size:13px;line-height:1.5}.time{color:var(--cyan);font-size:11px;margin-right:8px}.status{color:var(--green)}.apirow{display:flex;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid #142e50;font-size:13px}.foot{padding:12px 22px;color:#6e88ad;font-size:12px;text-align:center}
+@media(max-width:800px){main{grid-template-columns:1fr;padding:12px}.wide{grid-column:auto}.metrics,.actions{grid-template-columns:1fr 1fr}.panel{padding:14px}.value{font-size:28px}}
+@media(max-width:430px){.metrics,.actions{grid-template-columns:1fr}.command{flex-wrap:wrap}.command input{flex-basis:100%}}
+</style></head>
+<body>
+<header><div><div class="brand">◈ Sentinel<span>AI</span></div><div class="sub">YOUR AI PC ASSISTANT · SYSTEM CONTROL</div></div><div class="pill">● <span id="connection">Connecting...</span></div></header>
+<main>
+<section class="panel"><div class="heading">⌁ Live Metrics</div><div class="muted">Real-time CPU and RAM usage from backend</div>
+<div class="metrics">
+<div class="metric"><div class="metric-top"><span>CPU Usage</span><span>◉</span></div><div class="value" id="cpu">--%</div><div class="bar"><div class="fill" id="cpuBar"></div></div><div class="muted" style="margin-top:9px">Processor load</div></div>
+<div class="metric ram"><div class="metric-top"><span>RAM Usage</span><span>▦</span></div><div class="value" id="ram">--%</div><div class="bar"><div class="fill" id="ramBar"></div></div><div class="muted" id="ramDetail" style="margin-top:9px">Waiting for metrics...</div></div>
+</div><div class="muted" style="margin-top:12px">Device: <span id="platform">Waiting for backend...</span></div></section>
+<section class="panel"><div class="heading">▣ Live Console / Action Feed</div><div class="muted">Actual responses returned by the backend</div><div class="logs" id="logs"><div class="log"><span class="time">SYSTEM</span>Connecting to SentinelAI backend...</div></div></section>
+<section class="panel wide"><div class="heading">ϟ Action Interface</div><div class="muted">Choose an action or type a command below</div>
+<div class="actions">
+<button class="action" data-command="optimize ram"><b>🚀 Optimize RAM</b><span class="muted">Check memory usage safely</span></button>
+<button class="action" data-command="scan pc"><b>📊 Scan PC</b><span class="muted">Basic CPU and RAM status scan</span></button>
+<button class="action" data-command="open youtube"><b>🌐 Open YouTube</b><span class="muted">Open in default browser</span></button>
+<button class="action" data-command="open notepad"><b>📝 Open Notepad</b><span class="muted">Windows only</span></button>
+</div>
+<form class="command" id="commandForm"><input id="commandInput" placeholder="Type a command... e.g. open youtube" autocomplete="off"><button type="button" class="mic" id="micBtn" title="Voice input">🎙️</button><button class="btn" type="submit">Send ➤</button></form>
+</section>
+<section class="panel wide"><div class="heading">⌘ API Integration</div><div class="muted">Frontend ↔ local Python backend</div><div class="apirow"><span>GET /api/metrics</span><span class="status" id="metricsApi">Checking...</span></div><div class="apirow"><span>POST /api/action</span><span class="status" id="actionApi">Ready when backend is online</span></div><div class="apirow"><span>Voice input</span><span id="voiceStatus">Browser support check</span></div></section>
+</main><div class="foot">SentinelAI · Local prototype · Commands are allowlisted for safety</div>
+<script>
+const $=id=>document.getElementById(id);
+function log(message,ok=true,time=new Date().toLocaleTimeString()){const el=document.createElement('div');el.className='log';const t=document.createElement('span');t.className='time';t.textContent=time;el.append(t,document.createTextNode((ok?'✓ ':'⚠ ')+message));$('logs').prepend(el);while($('logs').children.length>30)$('logs').lastChild.remove();}
+async function refreshMetrics(){try{const r=await fetch('/api/metrics');if(!r.ok)throw Error('HTTP '+r.status);const d=await r.json();$('cpu').textContent=Math.round(d.cpu)+'%';$('ram').textContent=Math.round(d.ram)+'%';$('cpuBar').style.width=d.cpu+'%';$('ramBar').style.width=d.ram+'%';$('ramDetail').textContent=`${d.ram_used_gb} GB used / ${d.ram_total_gb} GB total`;$('platform').textContent=d.platform;$('connection').textContent='Backend Online';$('metricsApi').textContent='● Connected';}catch(e){$('connection').textContent='Backend Offline';$('metricsApi').textContent='● Offline';$('platform').textContent='Start app.py to connect';}}
+async function runCommand(command){if(!command.trim())return;log('Command sent: '+command);$('actionApi').textContent='● Request sent';try{const r=await fetch('/api/action',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({command})});const d=await r.json();log(d.message||'No response message',d.ok,d.time||new Date().toLocaleTimeString());$('actionApi').textContent=d.ok?'● Last request successful':'● Command rejected';if(!d.ok)$('actionApi').textContent='● Request returned an error';}catch(e){log('Backend unavailable. Start the Python server first.',false);$('actionApi').textContent='● Offline';}refreshMetrics();}
+document.querySelectorAll('[data-command]').forEach(b=>b.addEventListener('click',()=>runCommand(b.dataset.command)));
+$('commandForm').addEventListener('submit',e=>{e.preventDefault();runCommand($('commandInput').value);$('commandInput').value='';});
+const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+if(SpeechRecognition){$('voiceStatus').textContent='Available';$('micBtn').addEventListener('click',()=>{const rec=new SpeechRecognition();rec.lang='en-IN';rec.onresult=e=>{$('commandInput').value=e.results[0][0].transcript;};rec.onerror=()=>log('Voice input failed or permission was denied.',false);rec.start();});}else{$('voiceStatus').textContent='Not supported in this browser';$('micBtn').addEventListener('click',()=>log('Voice input is not supported here. Try Chrome on Android or desktop.',false));}
+refreshMetrics();setInterval(refreshMetrics,3000);
+</script></body></html>
